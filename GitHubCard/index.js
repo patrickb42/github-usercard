@@ -1,27 +1,33 @@
 (() => {
-  axios.get('https://api.github.com/users/patrickb42')
-    .then((mainUser) => {
-      const cards = document.querySelector('.cards');
+  const mainUsername = 'patrickb42';
+  const cards = document.querySelector('.cards');
+  let followersArray = [];
 
+  axios.get(`https://api.github.com/users/${mainUsername}`)
+    .then((mainUser) => {
       console.log('raw data', mainUser.data);
       cards.appendChild(createCard({ userData: mainUser.data }));
-      axios.get(`https://api.github.com/users/${mainUser.data.login}/followers`)
+    })
+    .then(() => {
+      axios.get(`https://api.github.com/users/${mainUsername}/followers`)
         .then((followers) => {
           console.log('followers', followers.data);
-          followers.data.forEach((follower) => {
-            let followerFullData;
+          followersArray = followers.data;
+          followersArray.forEach((follower) => {
             axios.get(`https://api.github.com/users/${follower.login}`)
               .then((followerFullResponse) => {
-                followerFullData = followerFullResponse.data;
-              }).catch((err) => {
+                cards.appendChild(createCard({ userData: followerFullResponse.data }));
+              })
+              .catch((err) => {
                 console.log(err);
               });
-            cards.appendChild(createCard({ userData: follower }));
           });
-        }).catch((err) => {
+        })
+        .catch((err) => {
           console.log(err);
         });
-    }).catch((err) => {
+    })
+    .catch((err) => {
       console.log(err);
     });
 
@@ -38,8 +44,6 @@
             Using that array, iterate over it, requesting data for each user,
             creating a new card for each user, and adding that card to the DOM.
   */
-
-  const followersArray = [];
 
   /* Step 3: Create a function that accepts a single object as its only argument,
             Using DOM methods and properties,
@@ -94,7 +98,7 @@
     // name.textContent = ;
 
     username.classList.add('username');
-    // username.textContent = ;
+    username.textContent = userData.login;
 
     // location.textContent = ;
 
