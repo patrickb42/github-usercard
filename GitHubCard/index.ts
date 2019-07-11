@@ -1,9 +1,14 @@
+import axios from 'axios';
+
 (() => {
   const mainUsername = 'patrickb42';
   const cards = document.querySelector('.cards');
   let followersArray = [];
 
-  function createCard({ userData }) {
+  interface CreateCardArg {
+    userData;
+  }
+  function createCard({ userData }: CreateCardArg): HTMLDivElement {
     const cardElement = document.createElement('div');
     const img = document.createElement('img');
     const cardInfo = document.createElement('div');
