@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 (() => {
   const mainUsername = 'patrickb42';
@@ -64,18 +64,17 @@ import axios from 'axios';
       cards.appendChild(createCard({ userData: mainUser.data }));
     })
     .then(() => {
-      axios.get(`https://api.github.com/users/${mainUsername}/followers`)
-        .then((followers) => {
-          followersArray = followers.data;
-          followersArray.forEach((follower) => {
-            axios.get(`https://api.github.com/users/${follower.login}`)
-              .then((followerFullResponse) => {
-                cards.appendChild(createCard({ userData: followerFullResponse.data }));
-              })
-              .catch();
-          });
-        })
-        .catch();
+      return axios.get(`https://api.github.com/users/${mainUsername}/followers`);
+    })
+    .then((followers) => {
+      followersArray = followers.data;
+      followersArray.forEach((follower) => {
+        axios.get(`https://api.github.com/users/${follower.login}`)
+          .then((followerFullResponse) => {
+            cards.appendChild(createCard({ userData: followerFullResponse.data }));
+          })
+          .catch();
+      });
     })
     .catch();
 })();
