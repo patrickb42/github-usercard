@@ -60,12 +60,8 @@
   }
 
   axios.get(`https://api.github.com/users/${mainUsername}`)
-    .then((mainUser) => {
-      cards.appendChild(createCard({ userData: mainUser.data }));
-    })
-    .then(() => {
-      return axios.get(`https://api.github.com/users/${mainUsername}/followers`);
-    })
+    .then(mainUser => cards.appendChild(createCard({ userData: mainUser.data })))
+    .then(() => axios.get(`https://api.github.com/users/${mainUsername}/followers`))
     .then((followers) => {
       followersArray = followers.data;
       followersArray.forEach((follower) => {

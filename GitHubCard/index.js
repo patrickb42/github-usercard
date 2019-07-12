@@ -43,12 +43,8 @@
         return cardElement;
     }
     axios.get("https://api.github.com/users/" + mainUsername)
-        .then(function (mainUser) {
-        cards.appendChild(createCard({ userData: mainUser.data }));
-    })
-        .then(function () {
-        return axios.get("https://api.github.com/users/" + mainUsername + "/followers");
-    })
+        .then(function (mainUser) { return cards.appendChild(createCard({ userData: mainUser.data })); })
+        .then(function () { return axios.get("https://api.github.com/users/" + mainUsername + "/followers"); })
         .then(function (followers) {
         followersArray = followers.data;
         followersArray.forEach(function (follower) {
